@@ -252,11 +252,12 @@ def _create_laoudo(extra: dict, proxy: str | None) -> 'BaseMailbox':
 
 
 def _create_yyds_mail(extra: dict, proxy: str | None) -> 'BaseMailbox':
+    import os
     return YYDSMailMailbox(
-        api_url=extra.get("yyds_mail_api_url", ""),
-        api_key=extra.get("yyds_mail_api_key", ""),
-        domain=extra.get("yyds_mail_domain", ""),
-        subdomain=extra.get("yyds_mail_subdomain", ""),
+        api_url=extra.get("yyds_mail_api_url") or os.environ.get("YYDS_MAIL_API_URL", "") or "",
+        api_key=extra.get("yyds_mail_api_key") or os.environ.get("YYDS_MAIL_API_KEY", "") or "",
+        domain=extra.get("yyds_mail_domain") or os.environ.get("YYDS_MAIL_DOMAIN", "") or "",
+        subdomain=extra.get("yyds_mail_subdomain") or os.environ.get("YYDS_MAIL_SUBDOMAIN", "") or "",
         proxy=proxy,
     )
 

@@ -12,6 +12,11 @@ services:
       # - APP_PASSWORD=changeme
       # 可选：设置 VNC 密码
       # - VNC_PASSWORD=changeme
+      # ── YYDS Mail 邮箱 Provider（可选，也可部署后在设置页配置）──
+      # - YYDS_MAIL_API_KEY=AC-xxxxxxxx
+      # - YYDS_MAIL_DOMAIN=your-domain.com
+      # - YYDS_MAIL_API_URL=https://maliapi.215.im
+      # - YYDS_MAIL_SUBDOMAIN=
     volumes:
       - ./data:/app/data   # 持久化 SQLite 数据库
     restart: unless-stopped

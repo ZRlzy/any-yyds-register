@@ -247,9 +247,9 @@ _BUILTIN_DEFINITIONS: list[dict] = [
         "category": "thirdparty",
         "auth_modes": [{"value": "apikey", "label": "API Key"}],
         "fields": [
-            {"key": "yyds_mail_api_url", "label": "API 地址（可选）", "placeholder": "https://maliapi.215.im", "category": "connection"},
-            {"key": "yyds_mail_api_key", "label": "API Key", "secret": True, "category": "auth", "hint": "以 AC- 开头的 API Key，在 YYDS Mail 控制台创建"},
-            {"key": "yyds_mail_domain", "label": "邮箱域名（可选）", "placeholder": "your-domain.com", "category": "connection", "hint": "已配置 MX 记录的域名，如 zran.cc.cd；留空则使用平台公共域名"},
+            {"key": "yyds_mail_api_url", "label": "API 地址（可选）", "placeholder": "https://maliapi.215.im", "category": "connection", "hint": "留空使用默认地址；Docker 部署可设环境变量 YYDS_MAIL_API_URL"},
+            {"key": "yyds_mail_api_key", "label": "API Key", "secret": True, "category": "auth", "hint": "以 AC- 开头的 API Key，在 YYDS Mail 控制台创建；Docker 部署可设环境变量 YYDS_MAIL_API_KEY"},
+            {"key": "yyds_mail_domain", "label": "邮箱域名（可选）", "placeholder": "your-domain.com", "category": "connection", "hint": "已配置 MX 记录的域名，如 zran.cc.cd；留空使用平台公共域名；Docker 部署可设环境变量 YYDS_MAIL_DOMAIN"},
             {"key": "yyds_mail_subdomain", "label": "子域名（可选）", "placeholder": "", "category": "connection", "hint": "泛子域名模式下的固定子域前缀，留空则自动分配"},
         ],
     },
