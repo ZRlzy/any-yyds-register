@@ -1,0 +1,11 @@
+schema_version: 1
+module_path: background_services
+title: 后台服务与 Turnstile 验证码求解器
+scope:
+    - services/
+source_files: []
+depends_on: []
+related_to:
+    - path: application_orchestrator
+    - path: core_engine
+    - path: infrastructure_repositories

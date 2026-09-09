@@ -1,0 +1,22 @@
+schema_version: 1
+module_path: ""
+title: Any Auto Register 多平台账号自动化注册系统
+scope:
+    - README.md
+    - README_en.md
+    - README_vi.md
+    - CONTRIBUTING.md
+    - .gitignore
+    - .dockerignore
+    - Dockerfile
+    - docker-compose.yml
+    - docker-entrypoint.sh
+    - main.py
+    - requirements.txt
+    - pytest.ini
+    - .github/
+    - LICENSE
+    - repo-main.zip
+source_files: []
+depends_on: []
+related_to: []

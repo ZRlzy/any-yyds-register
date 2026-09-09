@@ -1,0 +1,184 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: Q0DeR-MaG1C-BrAnCh-Fo2-NoN-GiT-Or-No-C0MmIt
+nodes_managed: true
+exported_at: "2026-09-09T08:33:31Z"
+modules:
+    "":
+        dir_name: Any Auto Register 多平台账号自动化注册系统
+        title: Any Auto Register 多平台账号自动化注册系统
+        scope:
+            - README.md
+            - README_en.md
+            - README_vi.md
+            - CONTRIBUTING.md
+            - .gitignore
+            - .dockerignore
+            - Dockerfile
+            - docker-compose.yml
+            - docker-entrypoint.sh
+            - main.py
+            - requirements.txt
+            - pytest.ini
+            - .github/
+            - LICENSE
+            - repo-main.zip
+        source_files: []
+        children:
+            - api_server
+            - application_orchestrator
+            - background_services
+            - core_engine
+            - customer_portal_api
+            - domain_model
+            - electron_desktop
+            - frontend_app
+            - infrastructure_repositories
+            - platforms
+            - providers
+            - tests
+        depends_on: []
+        related_to: []
+    api_server:
+        dir_name: FastAPI 业务接口层
+        title: FastAPI 业务接口层
+        scope:
+            - api/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: application_orchestrator
+            - path: electron_desktop
+            - path: frontend_app
+            - path: tests
+    application_orchestrator:
+        dir_name: 应用编排服务层（Application Orchestrator）
+        title: 应用编排服务层（Application Orchestrator）
+        scope:
+            - application/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: api_server
+            - path: background_services
+            - path: domain_model
+            - path: infrastructure_repositories
+            - path: tests
+    background_services:
+        dir_name: 后台服务与 Turnstile 验证码求解器
+        title: 后台服务与 Turnstile 验证码求解器
+        scope:
+            - services/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: application_orchestrator
+            - path: core_engine
+            - path: infrastructure_repositories
+    core_engine:
+        dir_name: Any-Register 核心引擎
+        title: Any-Register 核心引擎
+        scope:
+            - core/
+        source_files: []
+        children:
+            - core_engine/runtime_helpers
+        depends_on: []
+        related_to:
+            - path: background_services
+            - path: platforms
+            - path: providers
+    core_engine/runtime_helpers:
+        dir_name: 核心运行时与平台注册中心
+        title: 核心运行时与平台注册中心
+        scope:
+            - core/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    customer_portal_api:
+        dir_name: 客户门户 API（FastAPI 后台服务）
+        title: 客户门户 API（FastAPI 后台服务）
+        scope:
+            - customer_portal_api/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    domain_model:
+        dir_name: 领域模型定义（Domain Models）
+        title: 领域模型定义（Domain Models）
+        scope:
+            - domain/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: application_orchestrator
+    electron_desktop:
+        dir_name: Electron 桌面客户端（Any Auto Register）
+        title: Electron 桌面客户端（Any Auto Register）
+        scope:
+            - electron/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: api_server
+    frontend_app:
+        dir_name: Auto Register 前端管理界面
+        title: Auto Register 前端管理界面
+        scope:
+            - frontend/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: api_server
+    infrastructure_repositories:
+        dir_name: 基础设施仓储与运行时适配层
+        title: 基础设施仓储与运行时适配层
+        scope:
+            - infrastructure/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: application_orchestrator
+            - path: background_services
+    platforms:
+        dir_name: 多平台注册与账户管理插件集
+        title: 多平台注册与账户管理插件集
+        scope:
+            - platforms/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: core_engine
+    providers:
+        dir_name: 统一 Provider 插件注册中心
+        title: 统一 Provider 插件注册中心
+        scope:
+            - providers/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: core_engine
+    tests:
+        dir_name: API 与业务集成测试套件
+        title: API 与业务集成测试套件
+        scope:
+            - tests/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: api_server
+            - path: application_orchestrator

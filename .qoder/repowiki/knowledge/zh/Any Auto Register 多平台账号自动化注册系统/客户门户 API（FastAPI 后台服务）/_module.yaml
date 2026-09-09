@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: customer_portal_api
+title: 客户门户 API（FastAPI 后台服务）
+scope:
+    - customer_portal_api/
+source_files: []
+depends_on: []
+related_to: []

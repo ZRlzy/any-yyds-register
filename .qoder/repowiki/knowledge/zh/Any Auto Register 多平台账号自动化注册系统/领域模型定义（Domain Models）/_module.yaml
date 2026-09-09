@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: domain_model
+title: 领域模型定义（Domain Models）
+scope:
+    - domain/
+source_files: []
+depends_on: []
+related_to:
+    - path: application_orchestrator

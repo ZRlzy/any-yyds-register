@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: electron_desktop
+title: Electron 桌面客户端（Any Auto Register）
+scope:
+    - electron/
+source_files: []
+depends_on: []
+related_to:
+    - path: api_server

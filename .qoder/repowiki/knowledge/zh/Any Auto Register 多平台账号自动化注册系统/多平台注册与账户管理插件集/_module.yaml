@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: platforms
+title: 多平台注册与账户管理插件集
+scope:
+    - platforms/
+source_files: []
+depends_on: []
+related_to:
+    - path: core_engine

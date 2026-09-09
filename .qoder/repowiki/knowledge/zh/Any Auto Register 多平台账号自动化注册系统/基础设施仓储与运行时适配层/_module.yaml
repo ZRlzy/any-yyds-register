@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: infrastructure_repositories
+title: 基础设施仓储与运行时适配层
+scope:
+    - infrastructure/
+source_files: []
+depends_on: []
+related_to:
+    - path: application_orchestrator
+    - path: background_services

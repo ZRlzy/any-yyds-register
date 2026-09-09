@@ -1,0 +1,12 @@
+schema_version: 1
+module_path: api_server
+title: FastAPI 业务接口层
+scope:
+    - api/
+source_files: []
+depends_on: []
+related_to:
+    - path: application_orchestrator
+    - path: electron_desktop
+    - path: frontend_app
+    - path: tests

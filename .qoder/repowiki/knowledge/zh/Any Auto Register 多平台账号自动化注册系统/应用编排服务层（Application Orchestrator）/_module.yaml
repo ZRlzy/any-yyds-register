@@ -1,0 +1,13 @@
+schema_version: 1
+module_path: application_orchestrator
+title: 应用编排服务层（Application Orchestrator）
+scope:
+    - application/
+source_files: []
+depends_on: []
+related_to:
+    - path: api_server
+    - path: background_services
+    - path: domain_model
+    - path: infrastructure_repositories
+    - path: tests
