@@ -1,19 +1,19 @@
 <div align="center">
 
-# Any Auto Register
+# Any YYDS Register
 
 Account automation for 11+ AI platforms · Protocol / browser dual-mode · One-click Mac / Windows desktop
 
 <p>
-  <a href="https://github.com/lxf746/any-auto-register/stargazers"><img src="https://img.shields.io/github/stars/lxf746/any-auto-register?style=flat-square&logo=github&color=FFB003" alt="Stars" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/releases/latest"><img src="https://img.shields.io/github/v/release/lxf746/any-auto-register?style=flat-square&logo=github&color=22c55e" alt="Release" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/releases"><img src="https://img.shields.io/github/downloads/lxf746/any-auto-register/total?style=flat-square&logo=github&color=8b5cf6" alt="Downloads" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/network/members"><img src="https://img.shields.io/github/forks/lxf746/any-auto-register?style=flat-square&logo=github&color=3b82f6" alt="Forks" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/lxf746/any-auto-register?style=flat-square&color=f97316" alt="License" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/stargazers"><img src="https://img.shields.io/github/stars/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=FFB003" alt="Stars" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases/latest"><img src="https://img.shields.io/github/v/release/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=22c55e" alt="Release" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases"><img src="https://img.shields.io/github/downloads/ZRlzy/any-yyds-register/total?style=flat-square&logo=github&color=8b5cf6" alt="Downloads" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/network/members"><img src="https://img.shields.io/github/forks/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=3b82f6" alt="Forks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/ZRlzy/any-yyds-register?style=flat-square&color=f97316" alt="License" /></a>
 </p>
 
 <p>
-  <a href="https://github.com/lxf746/any-auto-register/releases/latest"><b>Download desktop</b></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases/latest"><b>Download desktop</b></a>
   &nbsp;·&nbsp;
   <a href="#what-it-solves">What it solves</a>
   &nbsp;·&nbsp;
@@ -26,21 +26,21 @@ Account automation for 11+ AI platforms · Protocol / browser dual-mode · One-c
   <a href="README_vi.md">Tiếng Việt</a>
 </p>
 
-<img src="assets/screenshots/概览.png" alt="Any Auto Register Dashboard" width="92%" />
+<img src="assets/screenshots/概览.png" alt="Any YYDS Register Dashboard" width="92%" />
 
 </div>
 
 ---
 
-> **This is the official upstream of [`lxf746/any-auto-register`](https://github.com/lxf746/any-auto-register)** — the original author's repository with the most timely updates. Other repositories with the same name are forks.
+> **This is a derivative work of [`lxf746/any-auto-register`](https://github.com/lxf746/any-auto-register)**, enhanced based on the original architecture. Thanks to the original author for open-sourcing.
 
 > For learning and research only. Not for commercial misuse. Users are responsible for evaluating and complying with the terms of service of the targeted platforms, and for any consequences that arise from use.
 
 ## What it solves
 
-Most similar projects only answer *"how do I register one platform"* and leave the engineering gaps wide open: how to manage mailboxes, get past captchas, rotate proxies, keep accounts alive after registration, refresh expired tokens, diagnose failures. Any Auto Register handles all of it.
+Most similar projects only answer *"how do I register one platform"* and leave the engineering gaps wide open: how to manage mailboxes, get past captchas, rotate proxies, keep accounts alive after registration, refresh expired tokens, diagnose failures. Any YYDS Register handles all of it.
 
-| | Other tools | Any Auto Register |
+| | Other tools | Any YYDS Register |
 |---|---|---|
 | Deployment | CLI / Docker / `.py` scripts | Desktop client (Mac / Win), double-click to run, embedded React UI |
 | Platform coverage | 1-3 | 11+ platforms + Anything generic adapter, plugin-based extension |
@@ -117,20 +117,20 @@ Grouped by responsibility:
 
 | Platform | Download |
 |------|------|
-| 🍎 macOS (Intel / Apple Silicon) | [Get `.dmg` from Releases](https://github.com/lxf746/any-auto-register/releases/latest) |
-| 🪟 Windows | [Get `.exe` from Releases](https://github.com/lxf746/any-auto-register/releases/latest) |
+| 🍎 macOS (Intel / Apple Silicon) | [Get `.dmg` from Releases](https://github.com/ZRlzy/any-yyds-register/releases/latest) |
+| 🪟 Windows | [Get `.exe` from Releases](https://github.com/ZRlzy/any-yyds-register/releases/latest) |
 
 Install → launch → enter activation code ([get one from the group](#community)) → pick a platform → configure mailbox → start registering.
 
 ### Docker
 
 ```bash
-mkdir -p any-auto-register && cd any-auto-register
+mkdir -p any-yyds-register && cd any-yyds-register
 
 cat > docker-compose.yml <<'EOF'
 services:
   app:
-    image: ghcr.io/lxf746/any-auto-register:latest
+    image: ghcr.io/ZRlzy/any-yyds-register:latest
     ports:
       - "8000:8000"   # Web UI
       - "6080:6080"   # noVNC (visualize the browser)
@@ -161,8 +161,8 @@ When deploying to a cloud server, open ports `8000` / `6080` / `8889`.
 Requires Python 3.11+ / Node.js 18+:
 
 ```bash
-git clone https://github.com/lxf746/any-auto-register.git
-cd any-auto-register/account_manager
+git clone https://github.com/ZRlzy/any-yyds-register.git
+cd any-yyds-register/account_manager
 
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -439,11 +439,11 @@ Join the user group for latest updates, activation codes, configuration tips, an
 | #4 | `469274724` | Full |
 | #5 | `906077873` | Open |
 
-Search the group ID inside QQ. For bugs and feature requests, please use [Issues](https://github.com/lxf746/any-auto-register/issues).
+Search the group ID inside QQ. For bugs and feature requests, please use [Issues](https://github.com/ZRlzy/any-yyds-register/issues).
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=lxf746/any-auto-register&type=Date)](https://star-history.com/#lxf746/any-auto-register&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=ZRlzy/any-yyds-register&type=Date)](https://star-history.com/#ZRlzy/any-yyds-register&Date)
 
 > If this project saved you some repetitive work, a ⭐ helps others find it.
 

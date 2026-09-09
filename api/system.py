@@ -12,7 +12,7 @@ from core.version import __version__
 router = APIRouter(tags=["system"])
 service = SystemService()
 
-_RELEASE_API = "https://api.github.com/repos/lxf746/any-auto-register/releases/latest"
+_RELEASE_API = "https://api.github.com/repos/ZRlzy/any-yyds-register/releases/latest"
 _VERSION_CACHE: dict = {}
 _VERSION_CACHE_TTL = 600  # 10 分钟，避免 GitHub API rate limit (60/h unauth)
 _VERSION_CACHE_LOCK = threading.Lock()

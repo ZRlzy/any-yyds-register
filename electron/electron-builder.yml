@@ -1,5 +1,5 @@
-appId: com.anyautoregister.app
-productName: Any Auto Register
+appId: com.anyydsregister.app
+productName: Any YYDS Register
 copyright: Copyright © 2024
 
 directories:
@@ -9,8 +9,8 @@ directories:
 # 自动更新：从 GitHub Releases 检查
 publish:
   provider: github
-  owner: lxf746
-  repo: any-auto-register
+  owner: ZRlzy
+  repo: any-yyds-register
 
 # 将 PyInstaller 产物和前端静态文件打包进 resources/
 extraResources:

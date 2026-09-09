@@ -315,7 +315,7 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
       <form onSubmit={submit} className="w-80 space-y-4 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-6">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)] text-sm font-bold text-white">A</div>
-          <h1 className="text-base font-semibold text-[var(--text-primary)]">Any Auto Register</h1>
+          <h1 className="text-base font-semibold text-[var(--text-primary)]">Any YYDS Register</h1>
         </div>
         <p className="text-sm text-[var(--text-muted)]">请输入访问密码</p>
         <input

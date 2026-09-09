@@ -322,19 +322,19 @@ function AboutTab() {
 
       <SettingGroup title="项目信息">
         <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] divide-y divide-[var(--border)]/50">
-          <InfoRow label="项目名称" value="Any Auto Register" />
+          <InfoRow label="项目名称" value="Any YYDS Register" />
           <InfoRow label="技术栈" value="FastAPI + React + Electron" />
           <InfoRow label="开源协议" value="AGPL-3.0" />
           <InfoRow
             label="GitHub"
             value={
               <a
-                href="https://github.com/lxf746/any-auto-register"
+                href="https://github.com/ZRlzy/any-yyds-register"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[var(--accent)] hover:underline"
               >
-                github.com/lxf746/any-auto-register
+                github.com/ZRlzy/any-yyds-register
                 <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 3.5h6.5V10M12 4L4 12" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
             }

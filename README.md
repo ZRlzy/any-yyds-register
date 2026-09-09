@@ -1,19 +1,19 @@
 <div align="center">
 
-# Any Auto Register
+# Any YYDS Register
 
 11+ AI 平台账号自动化注册与管理 · 协议 / 浏览器双模式 · Mac / Windows 桌面版一键启动
 
 <p>
-  <a href="https://github.com/lxf746/any-auto-register/stargazers"><img src="https://img.shields.io/github/stars/lxf746/any-auto-register?style=flat-square&logo=github&color=FFB003" alt="Stars" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/releases/latest"><img src="https://img.shields.io/github/v/release/lxf746/any-auto-register?style=flat-square&logo=github&color=22c55e" alt="Release" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/releases"><img src="https://img.shields.io/github/downloads/lxf746/any-auto-register/total?style=flat-square&logo=github&color=8b5cf6" alt="Downloads" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/network/members"><img src="https://img.shields.io/github/forks/lxf746/any-auto-register?style=flat-square&logo=github&color=3b82f6" alt="Forks" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/lxf746/any-auto-register?style=flat-square&color=f97316" alt="License" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/stargazers"><img src="https://img.shields.io/github/stars/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=FFB003" alt="Stars" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases/latest"><img src="https://img.shields.io/github/v/release/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=22c55e" alt="Release" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases"><img src="https://img.shields.io/github/downloads/ZRlzy/any-yyds-register/total?style=flat-square&logo=github&color=8b5cf6" alt="Downloads" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/network/members"><img src="https://img.shields.io/github/forks/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=3b82f6" alt="Forks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/ZRlzy/any-yyds-register?style=flat-square&color=f97316" alt="License" /></a>
 </p>
 
 <p>
-  <a href="https://github.com/lxf746/any-auto-register/releases/latest"><b>下载桌面版</b></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases/latest"><b>下载桌面版</b></a>
   &nbsp;·&nbsp;
   <a href="#它解决什么">它解决什么</a>
   &nbsp;·&nbsp;
@@ -26,21 +26,21 @@
   <a href="README_vi.md">Tiếng Việt</a>
 </p>
 
-<img src="assets/screenshots/概览.png" alt="Any Auto Register Dashboard" width="92%" />
+<img src="assets/screenshots/概览.png" alt="Any YYDS Register Dashboard" width="92%" />
 
 </div>
 
 ---
 
-> **本仓库是 [`lxf746/any-auto-register`](https://github.com/lxf746/any-auto-register) 官方上游**,最早的原作者仓库与最及时的更新都在此处。其他同名 fork 均为二次开发分支。
+> **本项目是 [`lxf746/any-auto-register`](https://github.com/lxf746/any-auto-register) 的二创分支**，基于原项目架构增强开发。感谢原作者的开源贡献。
 
 > 本项目仅供学习与研究,不得用于商业违规用途。使用者需自行评估并遵守目标平台的服务条款,所产生的一切后果由使用者自行承担。
 
 ## 它解决什么
 
-多数同类项目只解决"怎么注册某一个平台",留下大量工程化空白:邮箱怎么管、验证码怎么过、代理怎么轮换、注册成功后怎么持续用、Token 过期了怎么办、出错了怎么定位。Any Auto Register 把这些都做了。
+多数同类项目只解决"怎么注册某一个平台",留下大量工程化空白:邮箱怎么管、验证码怎么过、代理怎么轮换、注册成功后怎么持续用、Token 过期了怎么办、出错了怎么定位。Any YYDS Register 把这些都做了。
 
-| | 同类工具 | Any Auto Register |
+| | 同类工具 | Any YYDS Register |
 |---|---|---|
 | 部署 | 命令行 / Docker / .py 脚本 | 桌面客户端(Mac / Win)双击即用,内嵌 React UI |
 | 平台覆盖 | 1-3 个 | 11+ 平台 + Anything 通用适配器,新平台插件式接入 |
@@ -117,20 +117,20 @@
 
 | 平台 | 下载 |
 |------|------|
-| 🍎 macOS (Intel / Apple Silicon) | [Releases 下载 `.dmg`](https://github.com/lxf746/any-auto-register/releases/latest) |
-| 🪟 Windows | [Releases 下载 `.exe`](https://github.com/lxf746/any-auto-register/releases/latest) |
+| 🍎 macOS (Intel / Apple Silicon) | [Releases 下载 `.dmg`](https://github.com/ZRlzy/any-yyds-register/releases/latest) |
+| 🪟 Windows | [Releases 下载 `.exe`](https://github.com/ZRlzy/any-yyds-register/releases/latest) |
 
 下载安装 → 启动 → 输入激活码([加群获取](#社群))→ 选择平台 → 配置邮箱 → 开始注册。
 
 ### Docker
 
 ```bash
-mkdir -p any-auto-register && cd any-auto-register
+mkdir -p any-yyds-register && cd any-yyds-register
 
 cat > docker-compose.yml <<'EOF'
 services:
   app:
-    image: ghcr.io/lxf746/any-auto-register:latest
+    image: ghcr.io/ZRlzy/any-yyds-register:latest
     ports:
       - "8000:8000"   # Web UI
       - "6080:6080"   # noVNC 可视化浏览器
@@ -161,8 +161,8 @@ docker compose up -d
 需要 Python 3.11+ / Node.js 18+:
 
 ```bash
-git clone https://github.com/lxf746/any-auto-register.git
-cd any-auto-register/account_manager
+git clone https://github.com/ZRlzy/any-yyds-register.git
+cd any-yyds-register/account_manager
 
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -447,11 +447,11 @@ docker compose build --no-cache && docker compose up -d
 | 四群 | `469274724` | 已满 |
 | 五群 | `906077873` | 可加入 |
 
-直接在 QQ 中搜索群号加入。提交 Bug 或新功能请求请前往 [Issues](https://github.com/lxf746/any-auto-register/issues)。
+直接在 QQ 中搜索群号加入。提交 Bug 或新功能请求请前往 [Issues](https://github.com/ZRlzy/any-yyds-register/issues)。
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=lxf746/any-auto-register&type=Date)](https://star-history.com/#lxf746/any-auto-register&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=ZRlzy/any-yyds-register&type=Date)](https://star-history.com/#ZRlzy/any-yyds-register&Date)
 
 > 如果这个项目帮你省下了重复劳动的时间,点个 ⭐ 让更多人看到。
 

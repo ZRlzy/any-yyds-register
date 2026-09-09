@@ -1,19 +1,19 @@
 <div align="center">
 
-# Any Auto Register
+# Any YYDS Register
 
 Tự động hóa tài khoản cho 11+ nền tảng AI · Chế độ giao thức / trình duyệt · Khởi động một chạm trên Mac / Windows
 
 <p>
-  <a href="https://github.com/lxf746/any-auto-register/stargazers"><img src="https://img.shields.io/github/stars/lxf746/any-auto-register?style=flat-square&logo=github&color=FFB003" alt="Stars" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/releases/latest"><img src="https://img.shields.io/github/v/release/lxf746/any-auto-register?style=flat-square&logo=github&color=22c55e" alt="Release" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/releases"><img src="https://img.shields.io/github/downloads/lxf746/any-auto-register/total?style=flat-square&logo=github&color=8b5cf6" alt="Downloads" /></a>
-  <a href="https://github.com/lxf746/any-auto-register/network/members"><img src="https://img.shields.io/github/forks/lxf746/any-auto-register?style=flat-square&logo=github&color=3b82f6" alt="Forks" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/lxf746/any-auto-register?style=flat-square&color=f97316" alt="License" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/stargazers"><img src="https://img.shields.io/github/stars/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=FFB003" alt="Stars" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases/latest"><img src="https://img.shields.io/github/v/release/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=22c55e" alt="Release" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases"><img src="https://img.shields.io/github/downloads/ZRlzy/any-yyds-register/total?style=flat-square&logo=github&color=8b5cf6" alt="Downloads" /></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/network/members"><img src="https://img.shields.io/github/forks/ZRlzy/any-yyds-register?style=flat-square&logo=github&color=3b82f6" alt="Forks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/ZRlzy/any-yyds-register?style=flat-square&color=f97316" alt="License" /></a>
 </p>
 
 <p>
-  <a href="https://github.com/lxf746/any-auto-register/releases/latest"><b>Tải bản desktop</b></a>
+  <a href="https://github.com/ZRlzy/any-yyds-register/releases/latest"><b>Tải bản desktop</b></a>
   &nbsp;·&nbsp;
   <a href="#vấn-đề-được-giải-quyết">Vấn đề được giải quyết</a>
   &nbsp;·&nbsp;
@@ -26,21 +26,21 @@ Tự động hóa tài khoản cho 11+ nền tảng AI · Chế độ giao thứ
   <a href="README_en.md">English</a>
 </p>
 
-<img src="assets/screenshots/概览.png" alt="Any Auto Register Dashboard" width="92%" />
+<img src="assets/screenshots/概览.png" alt="Any YYDS Register Dashboard" width="92%" />
 
 </div>
 
 ---
 
-> **Đây là kho chính thức của [`lxf746/any-auto-register`](https://github.com/lxf746/any-auto-register)** — kho gốc của tác giả với các cập nhật mới nhất. Các kho cùng tên khác đều là fork.
+> **Đây là bản cải tiến từ [`lxf746/any-auto-register`](https://github.com/lxf746/any-auto-register)**, phát triển dựa trên kiến trúc gốc. Cảm ơn tác giả đã mã nguồn mở.
 
 > Dự án chỉ dành cho học tập và nghiên cứu, không được sử dụng cho mục đích thương mại trái phép. Người dùng có trách nhiệm tự đánh giá và tuân thủ điều khoản dịch vụ của các nền tảng đích, đồng thời tự chịu trách nhiệm về mọi hậu quả phát sinh khi sử dụng.
 
 ## Vấn đề được giải quyết
 
-Đa số dự án cùng loại chỉ trả lời *"đăng ký một nền tảng như thế nào"* và bỏ ngỏ phần kỹ thuật còn lại: quản lý email, vượt captcha, xoay proxy, duy trì tài khoản sau đăng ký, refresh token hết hạn, định vị lỗi. Any Auto Register xử lý tất cả.
+Đa số dự án cùng loại chỉ trả lời *"đăng ký một nền tảng như thế nào"* và bỏ ngỏ phần kỹ thuật còn lại: quản lý email, vượt captcha, xoay proxy, duy trì tài khoản sau đăng ký, refresh token hết hạn, định vị lỗi. Any YYDS Register xử lý tất cả.
 
-| | Công cụ khác | Any Auto Register |
+| | Công cụ khác | Any YYDS Register |
 |---|---|---|
 | Triển khai | CLI / Docker / script `.py` | Desktop client (Mac / Win), nhấp đôi là chạy, UI React tích hợp |
 | Độ phủ nền tảng | 1-3 | 11+ nền tảng + Anything adapter tổng quát, mở rộng kiểu plugin |
@@ -117,20 +117,20 @@ Phân nhóm theo trách nhiệm:
 
 | Nền tảng | Tải xuống |
 |------|------|
-| 🍎 macOS (Intel / Apple Silicon) | [Tải `.dmg` từ Releases](https://github.com/lxf746/any-auto-register/releases/latest) |
-| 🪟 Windows | [Tải `.exe` từ Releases](https://github.com/lxf746/any-auto-register/releases/latest) |
+| 🍎 macOS (Intel / Apple Silicon) | [Tải `.dmg` từ Releases](https://github.com/ZRlzy/any-yyds-register/releases/latest) |
+| 🪟 Windows | [Tải `.exe` từ Releases](https://github.com/ZRlzy/any-yyds-register/releases/latest) |
 
 Cài → khởi động → nhập activation code ([nhận từ nhóm](#cộng-đồng)) → chọn nền tảng → cấu hình email → bắt đầu đăng ký.
 
 ### Docker
 
 ```bash
-mkdir -p any-auto-register && cd any-auto-register
+mkdir -p any-yyds-register && cd any-yyds-register
 
 cat > docker-compose.yml <<'EOF'
 services:
   app:
-    image: ghcr.io/lxf746/any-auto-register:latest
+    image: ghcr.io/ZRlzy/any-yyds-register:latest
     ports:
       - "8000:8000"   # Web UI
       - "6080:6080"   # noVNC (xem browser)
@@ -161,8 +161,8 @@ Khi triển khai cloud, mở port `8000` / `6080` / `8889`.
 Yêu cầu Python 3.11+ / Node.js 18+:
 
 ```bash
-git clone https://github.com/lxf746/any-auto-register.git
-cd any-auto-register/account_manager
+git clone https://github.com/ZRlzy/any-yyds-register.git
+cd any-yyds-register/account_manager
 
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -439,11 +439,11 @@ Tham gia nhóm người dùng để cập nhật mới nhất, activation code, 
 | Nhóm 4 | `469274724` | Đã đầy |
 | Nhóm 5 | `906077873` | Còn chỗ |
 
-Tìm mã nhóm trong QQ để tham gia. Báo bug và yêu cầu tính năng vui lòng dùng [Issues](https://github.com/lxf746/any-auto-register/issues).
+Tìm mã nhóm trong QQ để tham gia. Báo bug và yêu cầu tính năng vui lòng dùng [Issues](https://github.com/ZRlzy/any-yyds-register/issues).
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=lxf746/any-auto-register&type=Date)](https://star-history.com/#lxf746/any-auto-register&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=ZRlzy/any-yyds-register&type=Date)](https://star-history.com/#ZRlzy/any-yyds-register&Date)
 
 > Nếu dự án này giúp bạn tiết kiệm công việc lặp lại, một ⭐ giúp nhiều người khác tìm thấy.
 
