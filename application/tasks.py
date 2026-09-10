@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import json
+import os
+import platform
+import re
 import threading
 import time
 import uuid
@@ -22,6 +25,41 @@ from core.db import AccountModel, TaskEventModel, TaskLog, TaskModel, engine, sa
 from core.platform_accounts import build_platform_account
 from core.registry import get
 from infrastructure.platform_runtime import PlatformRuntime
+
+
+def _detect_system_proxy() -> Optional[str]:
+    """自动检测系统代理（环境变量 → Windows 注册表）。
+
+    当用户未在任务中显式配置代理、代理池也为空时，
+    尝试从系统层面获取代理地址（如 Clash / v2ray 等工具设置的系统代理）。
+    """
+    # 1. 环境变量（优先级最高，跨平台通用）
+    for env_key in ("HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy", "ALL_PROXY", "all_proxy"):
+        val = os.environ.get(env_key, "").strip()
+        if val and val.lower() != "none":
+            return val
+
+    # 2. Windows 注册表：Internet Settings 系统代理
+    if platform.system() == "Windows":
+        try:
+            import winreg
+            key = winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER,
+                r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
+            )
+            proxy_enable, _ = winreg.QueryValueEx(key, "ProxyEnable")
+            if proxy_enable:
+                proxy_server, _ = winreg.QueryValueEx(key, "ProxyServer")
+                # ProxyServer 格式: "http=127.0.0.1:7890;https=127.0.0.1:7890" 或 "127.0.0.1:7890"
+                # 提取第一个地址
+                match = re.search(r"(?:https?=\s*)?(\d+\.\d+\.\d+\.\d+:\d+)", proxy_server)
+                if match:
+                    return f"http://{match.group(1)}"
+            winreg.CloseKey(key)
+        except Exception:
+            pass
+
+    return None
 
 TASK_TYPE_REGISTER = "register"
 TASK_TYPE_ACCOUNT_CHECK = "account_check"
@@ -740,7 +778,7 @@ def _execute_register_task(payload: dict[str, Any], logger: TaskLogger) -> None:
             shared_mailbox = create_mailbox(
                 provider=extra.get("mail_provider", ""),
                 extra=extra,
-                proxy=proxy or None,
+                proxy=proxy or _detect_system_proxy(),
             )
     except Exception as exc:
         logger.log(f"邮箱初始化失败: {exc}", level="error")
@@ -750,7 +788,7 @@ def _execute_register_task(payload: dict[str, Any], logger: TaskLogger) -> None:
     def _do_one(index: int) -> bool | str:
         if logger.is_cancel_requested():
             return "__cancel_requested__"
-        resolved_proxy = proxy or proxy_pool.get_next()
+        resolved_proxy = proxy or proxy_pool.get_next() or _detect_system_proxy()
         platform = _build_platform_instance(platform_name, payload, logger, resolved_proxy=resolved_proxy, shared_mailbox=shared_mailbox)
         try:
             logger.log(f"开始注册第 {index + 1}/{count} 个账号")

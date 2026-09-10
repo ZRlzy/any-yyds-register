@@ -13,6 +13,7 @@ export function TaskLogPanel({
   const [lines, setLines] = useState<string[]>([])
   const [task, setTask] = useState<any | null>(null)
   const [doneStatus, setDoneStatus] = useState<string | null>(null)
+  const [copyHint, setCopyHint] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const seenEventIdsRef = useRef<Set<number>>(new Set())
   const cursorRef = useRef(0)
@@ -34,6 +35,7 @@ export function TaskLogPanel({
     setLines([])
     setTask(null)
     setDoneStatus(null)
+    setCopyHint(null)
 
     const pushEvent = (payload: any) => {
       const eventId = Number(payload?.id || 0)
@@ -124,7 +126,34 @@ export function TaskLogPanel({
     'border-sky-400/40 bg-sky-400/10 text-sky-200'
 
   const copyLogs = () => {
-    navigator.clipboard?.writeText(lines.join('\n')).catch(() => {})
+    const text = lines.join('\n')
+    if (!text) return
+
+    const doCopy = (): boolean => {
+      // 优先使用现代 Clipboard API
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {})
+        return true
+      }
+      // 降级方案：通过 textarea + execCommand 复制（兼容非安全上下文 / HTTP）
+      try {
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.opacity = '0'
+        document.body.appendChild(ta)
+        ta.select()
+        const ok = document.execCommand('copy')
+        document.body.removeChild(ta)
+        return ok
+      } catch {
+        return false
+      }
+    }
+
+    const ok = doCopy()
+    setCopyHint(ok ? '已复制' : '复制失败，请手动选择复制')
+    window.setTimeout(() => setCopyHint(null), 2000)
   }
 
   return (
@@ -172,7 +201,7 @@ export function TaskLogPanel({
           onClick={copyLogs}
           className="rounded-full border border-[var(--border)] bg-[var(--bg-hover)] px-3 py-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
         >
-          复制日志
+          {copyHint ?? '复制日志'}
         </button>
       </div>
 
