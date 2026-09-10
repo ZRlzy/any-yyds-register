@@ -494,9 +494,16 @@ class RegistrationEngine:
             signup_body = f'{{"username":{{"value":"{self.email}","kind":"email"}},"screen_hint":"signup"}}'
 
             headers = {
+                "origin": "https://auth.openai.com",
                 "referer": "https://auth.openai.com/create-account",
                 "accept": "application/json",
                 "content-type": "application/json",
+                "accept-language": "en-US,en;q=0.9",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-origin",
+                "oai-device-id": did,
+                **_generate_datadog_trace_headers(),
             }
 
             if sen_payload:
@@ -1276,6 +1283,17 @@ class RegistrationEngine:
             # 7. 提交注册表单 + 解析响应判断账号状态
             self._log("7. 提交注册表单...")
             signup_result = self._submit_signup_form(did, sen_payload)
+
+            # 7b. 409 重试：刷新 sentinel token 后重试（sentinel token 是一次性的）
+            if not signup_result.success and "409" in str(signup_result.error_message):
+                self._log("检测到 409 invalid_state，刷新 sentinel 后重试...", "warning")
+                sen_payload = self._check_sentinel(did)
+                if sen_payload:
+                    self._log("Sentinel 已刷新，重新提交注册表单...")
+                    signup_result = self._submit_signup_form(did, sen_payload)
+                else:
+                    self._log("Sentinel 刷新失败，无法重试", "warning")
+
             if not signup_result.success:
                 result.error_message = f"提交注册表单失败: {signup_result.error_message}"
                 return result
