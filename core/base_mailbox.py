@@ -2041,12 +2041,12 @@ class YYDSMailMailbox(BaseMailbox):
             raise RuntimeError(f"YYDS Mail API 失败: {data.get('message') or resp.text[:200]}")
         return data.get("data", {})
 
-    def _api_get(self, path: str, params: dict = None) -> dict:
+    def _api_get(self, path: str, params: dict = None, *, timeout: int = 15) -> dict:
         from curl_cffi import requests as cffi_requests
         url = f"{self.api}{path}"
         resp = cffi_requests.get(
             url, params=params, headers=self._headers(), proxies=self.proxy,
-            timeout=15, impersonate="chrome136",
+            timeout=timeout, impersonate="chrome136",
         )
         # 204 No Content — 无新邮件，返回 None
         if resp.status_code == 204:
@@ -2126,9 +2126,11 @@ class YYDSMailMailbox(BaseMailbox):
                 wait_secs = min(30, int(timeout - (time.time() - start)))
                 wait_secs = max(1, wait_secs)
                 self._log(f"[YYDS Mail] 轮询 #{poll_count}: 请求 wait={wait_secs}s")
+                # timeout 必须 > wait，否则 curl 在长轮询完成前就超时
                 data = self._api_get(
                     "/v1/messages/next",
                     params={"address": address, "wait": wait_secs},
+                    timeout=wait_secs + 10,
                 )
                 if not data:
                     elapsed = int(time.time() - start)
