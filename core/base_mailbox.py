@@ -26,6 +26,13 @@ class MailboxAccount:
 
 
 class BaseMailbox(ABC):
+    def __init__(self):
+        self.log_fn = print  # 默认使用 print，可被外部覆盖
+
+    def _log(self, msg: str):
+        """输出日志，可通过设置 log_fn 自定义输出方式"""
+        self.log_fn(msg)
+
     @abstractmethod
     def get_email(self) -> MailboxAccount:
         """获取一个可用邮箱"""
@@ -2006,6 +2013,7 @@ class YYDSMailMailbox(BaseMailbox):
         subdomain: str = "",
         proxy: str = None,
     ):
+        super().__init__()
         self.api = _normalize_api_base_url(api_url, default=DEFAULT_YYDS_MAIL_API_URL, label="YYDS Mail API URL")
         self.api_key = str(api_key or "").strip()
         self.domain = str(domain or "").strip()
@@ -2110,23 +2118,23 @@ class YYDSMailMailbox(BaseMailbox):
         start = time.time()
         poll_count = 0
 
-        print(f"[YYDS Mail] 开始等待验证码，目标邮箱: {address}，超时: {timeout}s")
+        self._log(f"[YYDS Mail] 开始等待验证码，目标邮箱: {address}，超时: {timeout}s")
 
         while time.time() - start < timeout:
             poll_count += 1
             try:
                 wait_secs = min(30, int(timeout - (time.time() - start)))
                 wait_secs = max(1, wait_secs)
+                self._log(f"[YYDS Mail] 轮询 #{poll_count}: 请求 wait={wait_secs}s")
                 data = self._api_get(
                     "/v1/messages/next",
                     params={"address": address, "wait": wait_secs},
                 )
                 if not data:
-                    if poll_count <= 3 or poll_count % 5 == 0:
-                        elapsed = int(time.time() - start)
-                        print(f"[YYDS Mail] 轮询 #{poll_count}: 无新邮件 (已等 {elapsed}s)")
+                    elapsed = int(time.time() - start)
+                    self._log(f"[YYDS Mail] 轮询 #{poll_count}: 无新邮件 (已等 {elapsed}s)")
                     continue
-                print(f"[YYDS Mail] 轮询 #{poll_count}: 收到数据，keys={list(data.keys()) if isinstance(data, dict) else type(data).__name__}")
+                self._log(f"[YYDS Mail] 轮询 #{poll_count}: 收到数据，keys={list(data.keys()) if isinstance(data, dict) else type(data).__name__}")
                 message = data.get("message", {}) if isinstance(data, dict) else {}
                 mid = str(message.get("id", ""))
                 if mid and mid in seen:
@@ -2137,23 +2145,23 @@ class YYDSMailMailbox(BaseMailbox):
                 # YYDS Mail 原生返回 verificationCode
                 code = message.get("verificationCode")
                 if code and str(code) != "None":
-                    print(f"[YYDS Mail] 获取验证码: {code}")
+                    self._log(f"[YYDS Mail] 获取验证码: {code}")
                     return str(code)
 
                 # 回退：从正文正则提取
                 text = " ".join(str(message.get(f, "") or "") for f in ("subject", "text", "html"))
-                print(f"[YYDS Mail] 邮件 subject={message.get('subject', '')!r}, text 长度={len(text)}")
+                self._log(f"[YYDS Mail] 邮件 subject={message.get('subject', '')!r}, text 长度={len(text)}")
                 if keyword and keyword.lower() not in text.lower():
-                    print(f"[YYDS Mail] 关键词 {keyword!r} 未匹配，跳过")
+                    self._log(f"[YYDS Mail] 关键词 {keyword!r} 未匹配，跳过")
                     continue
                 text = re.sub(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', '', text)
                 match = pattern.search(text) if pattern else re.search(r'(?<!\d)(\d{6})(?!\d)', text)
                 if match:
                     code = match.group(1) if match.groups() else match.group(0)
-                    print(f"[YYDS Mail] 正则提取验证码: {code}")
+                    self._log(f"[YYDS Mail] 正则提取验证码: {code}")
                     return code
             except Exception as exc:
-                print(f"[YYDS Mail] 轮询 #{poll_count} 异常: {exc}")
+                self._log(f"[YYDS Mail] 轮询 #{poll_count} 异常: {exc}")
             time.sleep(1)
 
         raise TimeoutError(f"YYDS Mail 等待验证码超时 ({timeout}s, 轮询 {poll_count} 次)")

@@ -45,6 +45,9 @@ class ChatGPTProtocolMailboxWorker:
     ):
         if not mailbox or not mailbox_account:
             raise ValueError("ChatGPT 注册流程依赖 mailbox provider，当前未获取到邮箱账号")
+        # 将日志回调传递给 mailbox，使其内部日志通过任务的日志系统输出
+        if hasattr(mailbox, 'log_fn'):
+            mailbox.log_fn = log_fn
         email_service = _MailboxEmailService(
             mailbox=mailbox,
             mailbox_account=mailbox_account,
