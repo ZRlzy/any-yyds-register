@@ -2020,10 +2020,13 @@ class YYDSMailMailbox(BaseMailbox):
         return {"X-API-Key": self.api_key, "Content-Type": "application/json"}
 
     def _api_post(self, path: str, body: dict) -> dict:
-        import requests
+        # 使用 curl_cffi 伪装浏览器 TLS 指纹，避免被 Cloudflare（error 1010）拦截
+        from curl_cffi import requests as cffi_requests
         url = f"{self.api}{path}"
-        with suppress_insecure_request_warning():
-            resp = requests.post(url, json=body, headers=self._headers(), proxies=self.proxy, timeout=15)
+        resp = cffi_requests.post(
+            url, json=body, headers=self._headers(), proxies=self.proxy,
+            timeout=15, impersonate="chrome136",
+        )
         resp.raise_for_status()
         data = resp.json()
         if not data.get("success"):
@@ -2031,11 +2034,20 @@ class YYDSMailMailbox(BaseMailbox):
         return data.get("data", {})
 
     def _api_get(self, path: str, params: dict = None) -> dict:
-        import requests
+        from curl_cffi import requests as cffi_requests
         url = f"{self.api}{path}"
-        with suppress_insecure_request_warning():
-            resp = requests.get(url, params=params, headers=self._headers(), proxies=self.proxy, timeout=15)
+        resp = cffi_requests.get(
+            url, params=params, headers=self._headers(), proxies=self.proxy,
+            timeout=15, impersonate="chrome136",
+        )
+        # 204 No Content — 无新邮件，返回 None
+        if resp.status_code == 204:
+            return None
         resp.raise_for_status()
+        # 防御：空 body 也视为无数据
+        text = resp.text.strip()
+        if not text:
+            return None
         data = resp.json()
         if not data.get("success"):
             raise RuntimeError(f"YYDS Mail API 失败: {data.get('message') or resp.text[:200]}")
@@ -2096,8 +2108,12 @@ class YYDSMailMailbox(BaseMailbox):
         seen = set(before_ids or [])
         pattern = re.compile(code_pattern) if code_pattern else None
         start = time.time()
+        poll_count = 0
+
+        print(f"[YYDS Mail] 开始等待验证码，目标邮箱: {address}，超时: {timeout}s")
 
         while time.time() - start < timeout:
+            poll_count += 1
             try:
                 wait_secs = min(30, int(timeout - (time.time() - start)))
                 wait_secs = max(1, wait_secs)
@@ -2106,7 +2122,11 @@ class YYDSMailMailbox(BaseMailbox):
                     params={"address": address, "wait": wait_secs},
                 )
                 if not data:
+                    if poll_count <= 3 or poll_count % 5 == 0:
+                        elapsed = int(time.time() - start)
+                        print(f"[YYDS Mail] 轮询 #{poll_count}: 无新邮件 (已等 {elapsed}s)")
                     continue
+                print(f"[YYDS Mail] 轮询 #{poll_count}: 收到数据，keys={list(data.keys()) if isinstance(data, dict) else type(data).__name__}")
                 message = data.get("message", {}) if isinstance(data, dict) else {}
                 mid = str(message.get("id", ""))
                 if mid and mid in seen:
@@ -2114,13 +2134,17 @@ class YYDSMailMailbox(BaseMailbox):
                 if mid:
                     seen.add(mid)
 
+                # YYDS Mail 原生返回 verificationCode
                 code = message.get("verificationCode")
                 if code and str(code) != "None":
                     print(f"[YYDS Mail] 获取验证码: {code}")
                     return str(code)
 
+                # 回退：从正文正则提取
                 text = " ".join(str(message.get(f, "") or "") for f in ("subject", "text", "html"))
+                print(f"[YYDS Mail] 邮件 subject={message.get('subject', '')!r}, text 长度={len(text)}")
                 if keyword and keyword.lower() not in text.lower():
+                    print(f"[YYDS Mail] 关键词 {keyword!r} 未匹配，跳过")
                     continue
                 text = re.sub(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', '', text)
                 match = pattern.search(text) if pattern else re.search(r'(?<!\d)(\d{6})(?!\d)', text)
@@ -2128,11 +2152,11 @@ class YYDSMailMailbox(BaseMailbox):
                     code = match.group(1) if match.groups() else match.group(0)
                     print(f"[YYDS Mail] 正则提取验证码: {code}")
                     return code
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"[YYDS Mail] 轮询 #{poll_count} 异常: {exc}")
             time.sleep(1)
 
-        raise TimeoutError(f"YYDS Mail 等待验证码超时 ({timeout}s)")
+        raise TimeoutError(f"YYDS Mail 等待验证码超时 ({timeout}s, 轮询 {poll_count} 次)")
 
     def wait_for_link(
         self,

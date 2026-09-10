@@ -18,6 +18,7 @@ def _make_mailbox(**overrides) -> YYDSMailMailbox:
 
 def _fake_response(data: dict, success: bool = True) -> MagicMock:
     resp = MagicMock()
+    resp.status_code = 200
     resp.json.return_value = {"success": success, "data": data}
     resp.raise_for_status = MagicMock()
     resp.text = json.dumps({"success": success, "data": data})
@@ -48,7 +49,7 @@ class TestYYDSMailInit:
 # ─ get_email ──────────────────────────────────────────────────────────
 
 class TestYYDSMailGetEmail:
-    @patch("requests.post")
+    @patch("curl_cffi.requests.post")
     def test_create_email_success(self, mock_post):
         mock_post.return_value = _fake_response({
             "id": "inbox_001",
@@ -61,7 +62,7 @@ class TestYYDSMailGetEmail:
         assert account.account_id == "inbox_001"
         assert (account.extra or {}).get("yyds_mail_token") == "temp_token_xyz"
 
-    @patch("requests.post")
+    @patch("curl_cffi.requests.post")
     def test_create_email_with_domain(self, mock_post):
         mock_post.return_value = _fake_response({
             "id": "inbox_002",
@@ -74,7 +75,7 @@ class TestYYDSMailGetEmail:
         body = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
         assert body["domain"] == "zran.cc.cd"
 
-    @patch("requests.post")
+    @patch("curl_cffi.requests.post")
     def test_create_email_with_subdomain(self, mock_post):
         mock_post.return_value = _fake_response({
             "id": "inbox_003",
@@ -87,7 +88,7 @@ class TestYYDSMailGetEmail:
         body = call_kwargs.kwargs.get("json") or call_kwargs[1].get("json")
         assert body["subdomain"] == "sub"
 
-    @patch("requests.post")
+    @patch("curl_cffi.requests.post")
     def test_create_email_api_failure(self, mock_post):
         mock_post.return_value = _fake_response({}, success=False)
         mock_post.return_value.json.return_value = {"success": False, "message": "invalid key"}
@@ -99,7 +100,7 @@ class TestYYDSMailGetEmail:
 # ── get_current_ids ─────────────────────────────────────────────────────
 
 class TestYYDSMailGetCurrentIds:
-    @patch("requests.get")
+    @patch("curl_cffi.requests.get")
     def test_returns_message_ids(self, mock_get):
         mock_get.return_value = _fake_response({
             "messages": [
@@ -116,7 +117,7 @@ class TestYYDSMailGetCurrentIds:
         ids = mb.get_current_ids(account)
         assert ids == {"msg_1", "msg_2"}
 
-    @patch("requests.get")
+    @patch("curl_cffi.requests.get")
     def test_empty_inbox(self, mock_get):
         mock_get.return_value = _fake_response({"messages": [], "total": 0})
         mb = _make_mailbox()
@@ -128,7 +129,7 @@ class TestYYDSMailGetCurrentIds:
 # ── wait_for_code ───────────────────────────────────────────────────────
 
 class TestYYDSMailWaitForCode:
-    @patch("requests.get")
+    @patch("curl_cffi.requests.get")
     def test_native_verification_code(self, mock_get):
         mock_get.return_value = _fake_response({
             "message": {
@@ -144,7 +145,7 @@ class TestYYDSMailWaitForCode:
         code = mb.wait_for_code(account, timeout=5)
         assert code == "123456"
 
-    @patch("requests.get")
+    @patch("curl_cffi.requests.get")
     def test_fallback_regex_extraction(self, mock_get):
         mock_get.return_value = _fake_response({
             "message": {
@@ -160,7 +161,7 @@ class TestYYDSMailWaitForCode:
         code = mb.wait_for_code(account, timeout=5)
         assert code == "654321"
 
-    @patch("requests.get")
+    @patch("curl_cffi.requests.get")
     def test_timeout_raises(self, mock_get):
         mock_get.return_value = _fake_response({})  # 204 → empty data
         mb = _make_mailbox()
@@ -172,7 +173,7 @@ class TestYYDSMailWaitForCode:
 # ─ wait_for_link ───────────────────────────────────────────────────────
 
 class TestYYDSMailWaitForLink:
-    @patch("requests.get")
+    @patch("curl_cffi.requests.get")
     def test_extract_verification_link(self, mock_get):
         mock_get.return_value = _fake_response({
             "message": {
