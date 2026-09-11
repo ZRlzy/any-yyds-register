@@ -334,19 +334,58 @@ class RegistrationEngine:
             from .constants import CHATGPT_APP
             self._log("通过 chatgpt.com NextAuth 发起 OAuth...")
 
-            # 1. 访问 chatgpt.com 获取基础 cookie
-            self.session.get(f"{CHATGPT_APP}/", timeout=15)
-            oai_did = self.session.cookies.get("oai-did", "")
-            self._log(f"chatgpt.com oai-did: {oai_did[:20]}...")
+            # 1. 访问 chatgpt.com 获取基础 cookie（带重试）
+            for attempt in range(3):
+                try:
+                    r1 = self.session.get(f"{CHATGPT_APP}/", timeout=15)
+                    if r1.status_code == 200:
+                        break
+                    self._log(f"访问 chatgpt.com 状态: {r1.status_code} (尝试 {attempt+1}/3)", "warning")
+                except Exception as e:
+                    self._log(f"访问 chatgpt.com 异常: {e} (尝试 {attempt+1}/3)", "warning")
+                if attempt < 2:
+                    time.sleep(2)
+            else:
+                self._log("访问 chatgpt.com 失败: 3 次重试均失败", "error")
+                return False
 
-            # 2. 获取 CSRF token
-            csrf_resp = self.session.get(f"{CHATGPT_APP}/api/auth/csrf", timeout=15)
-            csrf_data = csrf_resp.json()
-            csrf_token = csrf_data.get("csrfToken", "")
+            oai_did = self.session.cookies.get("oai-did", "")
+            self._log(f"chatgpt.com oai-did: {oai_did[:20] if oai_did else 'N/A'}...")
+            if not oai_did:
+                self._log("未获取到 oai-did cookie", "error")
+                return False
+
+            # 2. 获取 CSRF token（带重试）
+            csrf_token = ""
+            for attempt in range(3):
+                try:
+                    csrf_resp = self.session.get(f"{CHATGPT_APP}/api/auth/csrf", timeout=15)
+                    if csrf_resp.status_code == 200:
+                        # 检查 Content-Type
+                        ct = csrf_resp.headers.get("content-type", "")
+                        if "json" in ct.lower():
+                            csrf_data = csrf_resp.json()
+                            csrf_token = csrf_data.get("csrfToken", "")
+                            if csrf_token:
+                                break
+                        # 非 JSON 响应，记录并重试
+                        self._log(f"CSRF 响应非 JSON: status={csrf_resp.status_code}, content-type={ct} (尝试 {attempt+1}/3)", "warning")
+                    else:
+                        self._log(f"CSRF 状态: {csrf_resp.status_code} (尝试 {attempt+1}/3)", "warning")
+                except Exception as e:
+                    self._log(f"CSRF 请求异常: {e} (尝试 {attempt+1}/3)", "warning")
+                if attempt < 2:
+                    time.sleep(2)
+
             if not csrf_token:
-                # 从 cookie 中提取
+                # 最后尝试从 cookie 中提取
                 csrf_cookie = self.session.cookies.get("__Host-next-auth.csrf-token", "")
-                csrf_token = csrf_cookie.split("%7C")[0] if "%7C" in csrf_cookie else csrf_cookie.split("|")[0]
+                if csrf_cookie:
+                    csrf_token = csrf_cookie.split("%7C")[0] if "%7C" in csrf_cookie else csrf_cookie.split("|")[0]
+                if not csrf_token:
+                    self._log("获取 CSRF token 失败: 3 次重试均失败且 cookie 中无 token", "error")
+                    return False
+
             self._log(f"CSRF token: {csrf_token[:20]}...")
 
             # 3. 调用 signin/openai 获取 authorize URL
