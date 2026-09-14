@@ -3851,26 +3851,18 @@ class ChatGPTBrowserRegister:
             launch_opts["proxy"] = proxy
             launch_opts["geoip"] = True
 
-        with Camoufox(**launch_opts) as browser:
-            page = browser.new_page()
-            self.log("启动浏览器上下文注册状态机")
-            final_state = _browser_registration_flow(
-                page,
-                email,
-                password,
-                self.otp_callback,
-                self.phone_callback,
-                self.log,
-            )
-            self.log(f"注册流程完成: page={final_state.get('page_type') or '-'}")
-
-            # 获取 session token 和 cookies
-            cookies_dict = _get_cookies(page)
-
-            # ═══ 通过 Codex CLI OAuth 获取正确的 token ═══
-            # 注册完成后的浏览器上下文 session 状态不稳定（NS_BINDING_ABORTED），
-            # 直接用全新浏览器做 OAuth 更可靠
-            self.log("执行 Codex CLI OAuth 流程获取 token...")
+        try:
+            with Camoufox(**launch_opts) as browser:
+                self._run_registration_state_machine(browser, email, password)
+        except Exception as e:
+            # camoufox[geoip] extra 缺失时降级重试（geoip 仅用于让浏览器匹配代理地区，非硬性依赖）
+            if launch_opts.get("geoip") and "geoip" in str(e).lower():
+                self.log(f"geoip 依赖缺失，降级为 geoip=False 重试: {e}")
+                launch_opts["geoip"] = False
+                with Camoufox(**launch_opts) as browser:
+                    self._run_registration_state_machine(browser, email, password)
+            else:
+                raise
 
         # 直接用全新浏览器做 OAuth（注册后的浏览器上下文不可靠）
         codex_result = self._retry_oauth_fresh_browser(email, password)
@@ -3887,6 +3879,28 @@ class ChatGPTBrowserRegister:
             }
 
         raise RuntimeError("ChatGPT 注册未完成完整 OAuth callback，已拒绝回退到 session/access_token 半成品结果")
+
+    def _run_registration_state_machine(self, browser, email: str, password: str) -> None:
+        """在浏览器上下文中执行注册状态机（geoip 降级重试共用）。"""
+        page = browser.new_page()
+        self.log("启动浏览器上下文注册状态机")
+        final_state = _browser_registration_flow(
+            page,
+            email,
+            password,
+            self.otp_callback,
+            self.phone_callback,
+            self.log,
+        )
+        self.log(f"注册流程完成: page={final_state.get('page_type') or '-'}")
+
+        # 获取 session token 和 cookies
+        cookies_dict = _get_cookies(page)
+
+        # ═══ 通过 Codex CLI OAuth 获取正确的 token ═══
+        # 注册完成后的浏览器上下文 session 状态不稳定（NS_BINDING_ABORTED），
+        # 直接用全新浏览器做 OAuth 更可靠
+        self.log("执行 Codex CLI OAuth 流程获取 token...")
 
     def _retry_oauth_fresh_browser(self, email, password):
         """在全新浏览器 context 里做 Codex OAuth（绕过 add_phone session）。"""
